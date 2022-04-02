@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Component } from 'react';
 
@@ -7,8 +6,8 @@ class App extends Component {
     super();
     this.state = {
       monsters: [
-
-      ]
+      ],
+      searchField:''
     }
   }
 
@@ -21,11 +20,24 @@ class App extends Component {
     }))
   }
 
+  onSearchChange = (event) => {
+    const searchField = event.target.value.toLowerCase()
+
+    this.setState(() => { return { searchField } })
+  }
+
   render() {
+    const { monsters, searchField}= this.state
+    const { onSearchChange}= this
+    const filteredMonsters = monsters.filter(monster => {
+      return monster.name.toLowerCase().includes(searchField)
+    })
+
     return (
       <div className="App">
+        <input type="search" className='searchbox' placeholder='search monsters' onChange={onSearchChange} />
         {
-          this.state.monsters.map(monster => {
+          filteredMonsters.map(monster => {
             return <h1 key={monster.id}>{monster.name}</h1>
           })
         }
